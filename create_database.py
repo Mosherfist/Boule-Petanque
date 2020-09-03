@@ -1,4 +1,6 @@
-import os, sys, sqlite3
+import os
+import sqlite3
+
 
 def datenbank_erstellen(datenbank_name):
     if os.path.exists(datenbank_name + ".db"):
