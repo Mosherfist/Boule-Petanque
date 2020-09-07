@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def tabelle_abfragen(datenbank_name):
     stand = []
     conn = sqlite3.connect(datenbank_name + ".db")
@@ -12,3 +13,6 @@ def tabelle_abfragen(datenbank_name):
         stand.append(Name, gewonnene_Spiele, Punkte)
     return stand
     conn.close()
+
+
+tabelle_abfragen("Boule")
