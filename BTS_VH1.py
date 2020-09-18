@@ -14,7 +14,7 @@ def datenbank_erstellen(db_name):
         conn.close()
         print("Datenbank " + db_name + ".db" + " und Tabellen erfolgreich erstellt")
 
-
+##dies isjt ein
 
 file_db = []
 count   = 0
