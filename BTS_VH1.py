@@ -14,7 +14,6 @@ def datenbank_erstellen(db_name):
         conn.close()
         print("Datenbank " + db_name + ".db" + " und Tabellen erfolgreich erstellt")
 
-##dies isjt ein
 
 file_db = []
 count   = 0
@@ -24,7 +23,23 @@ def datenbanken_auflisten():
         file_db.append(file)
         count += 1
         print(count, "  ",file)
-       #print(file_db)
+
+def anz_bahnen():
+    pass
+#TODO: Anzahl Bahnen erfassen und betreuen
+"""
+> Anzahl Bahnen (Spielfelder) und TL (Terra Libre) erfassen
+> Jede Spielbahn kann zu jeder Zeit gesperrt bzw. freigegeben werden.
+>> Oftmals will man bei Endspielen, ganz bestimmte Bahnen haben, damit die Zuschauer auch etwas davon haben.
+>> Terra Libre = Die Teams müssen sich ihre Spielmöglichkeiten selbst suchen. Diese Möglichkeit wird genutz, wenn die Anzahl der Bahnen nicht ausreicht.
+>> Anzahl der Bahnen und evtl TL einmalig erfassen und speichern.
+>> Bei weiteren Turnieren wird lediglich abgefragt, ob gespeicherten Daten noch richtig sind.
+>> Es gibt weniger Bahnen (kein TL), als Spielpaarungen:
+>>> Nach einer beendeten Spielpaarung wird das nächste Team auf der frei gewordenen Bahn eingesetzt.
+>> Es gibt mehr Bahnen als Spielpaarungen in einer Runde:
+>>> Hier wird darauf geachtet, dass alle Bahnen in etwa die gleiche Anzahl von Spielpaarungen hat.
+"""
+
 
 def tn_erfassen():
     eingabe1_tn = ""
@@ -38,7 +53,8 @@ def tn_erfassen():
         eingabe_tn = input("Deine Eingabe: ")
         eingabe1_tn = eingabe_tn.lower()
         if eingabe1_tn != "quit":
-            c.execute("INSERT INTO Teilnehmer(Teamname,Aktiv, Freilos,gew_Spiele, Diff_Punkte) VALUES (?,?,?,?,?)",(eingabe_tn[:20], 'A','N',0,0))
+            c.execute("INSERT INTO Teilnehmer(Teamname,Aktiv, Freilos,gew_Spiele, Diff_Punkte) VALUES (?,?,?,?,?)",
+                      (eingabe_tn[:20], 'A','N',0,0))
             #c.execute("INSERT INTO Teilnehmer VALUES (Teamname, Aktiv, Freilos)", (eingabe_tn[:20], 'A', 'N'))
             conn.commit()
             c.execute("SELECT * FROM Teilnehmer ORDER BY team_ID DESC LIMIT 1")
@@ -80,6 +96,14 @@ def teilnehmerliste():
     for i in teilnehmer:
         team_ID, teamname = i
         print(f"{team_ID:6d} {'':3} {teamname:20s} ")
+#TODO:  Teilnehmerliste in Flask ausgeben
+
+def tn_tabelle():
+    pass
+#TODO: Teilnehmer Tabellestand in Flask erstellen
+"""
+> Wenn möglich, nach jeder Änderung automatisch aktualisieren
+"""
 
 def neue_runde():
     inhalt = []
@@ -87,17 +111,29 @@ def neue_runde():
     c = conn.cursor()
     c.execute("SELECT * FROM Spielablauf")
     inhalt = c.fetchall()
-    print(inhalt)
+    #print(inhalt)
     if not inhalt:                                                  ##Abfrage, ob Tabelle Spielablauf gefüllt
         turnier_auslosung()
     for i in range(len(inhalt)):
-        print(inhalt[i])
+        #print(inhalt[i])
         if inhalt[i][5] or inhalt[i][6] == 0:
-            print("Es fehlen noch Einträge der aktuellen Runde")
+            print("\nEs fehlen noch Einträge der aktuellen Runde")
             ergebnisse()
             #i += 1
 ##Neue Runde noch offen################################################
 #TODO: Neue Runde bearbeiten
+"""
+> Abfragen, ob alle Ergebnisse erfasst wurden. 
+> Wenn ja:
+>> Anhand einer neuen, aktuellen Tabelle werden die neuen Partien erstellt (Liste).
+>>> Evtl. Paussierende dürfen nicht erfasst werden
+>>> Teams mit Freilos müssen berücksichtigt werden
+>>> Kein Team darf 2x gegeneinander spielen.
+>> Hunderter Counter um 100 erhöhen 
+> Wenn nein:
+>> Print("Es müssen erst alle Ergebnisse erfasst sein")
+>> Zurück zum Auswahl-Menue
+"""
 def turnier_auslosung():
     counter = 100
     los_trommel = []
@@ -132,17 +168,19 @@ def ergebnisse():
     inhalt = []
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    c.execute("SELECT Spiel_ID, Gegner_1, Gegner_2 FROM Spielablauf WHERE Punkte_G1 IS NULL ")
+    c.execute("SELECT Spiel_ID, Gegner_1, Gegner_2 FROM Spielablauf WHERE Punkte_G1 IS 0 ")
+    #Achtung Punkte_G1 ist default 0!!!!
     conn.commit()
     inhalt = c.fetchall()
-    print(inhalt)
+    #print(inhalt)
     for i in range(len(inhalt)):
         if i < len(inhalt):
             print(inhalt[i][0], "  ", inhalt[i][1], " : ", inhalt[i][2])
             i += 1
     while (eingabe != "quit"):
         if eingabe != "quit":
-            print("Spielergebnisse wie folgt eintragen: lfd-Ergebnis1:Ergebnis2 \n\
+#TODO: Alle noch offenen Spiele anzeigen
+            print("\nSpielergebnisse wie folgt eintragen: lfd-Ergebnis1:Ergebnis2 \n\
                   Spielrunden.p: 101-13:00\n\
                   oder Quit für Beenden")
             eingabe = input("Deine Eingabe:")
@@ -177,11 +215,19 @@ def ergebnisse():
                 team1 = rows[0][2]
                 team2 = rows[0][3]
                 c.execute("UPDATE Teilnehmer SET Diff_Punkte= Diff_Punkte + ?, gew_Spiele= gew_Spiele + ? WHERE Team_ID=?", (et011, gSpiele1, team1))
-                conn.commit()
                 c.execute("UPDATE Teilnehmer SET Diff_Punkte= Diff_Punkte + ?, gew_Spiele= gew_Spiele + ? WHERE Team_ID=?", (et022, gSpiele2, team2))
                 conn.commit()
-                print("Ergebnisse")
+                #print("Ergebnisse")
     conn.close()
+
+def ergebnisse_korr():
+    pass
+#TODO: Ergebnisse korrigieren
+"""
+> Es werden alle eingetragenen Spiel-Ergebnisse aufgelistet
+>> Der User kann nun eine Korrektur vornehmen
+>>> Änderungen in Teilnehmer- und Spielablauf vornehmen
+"""
 
 def FeEinGabe(eingabe01):
     #global eingabe01
@@ -196,21 +242,24 @@ eingabe1 = ""
 while eingabe1 != "quit":
     print("\n\
               Eine Auswahl treffen:                                    \n\
-              Voreinstellunnen                                          \n\
-              11    Turnier mit neuer Tabelle starten                    \n\
-              12    Turnier mit bestehender Tabelle starten               \n\
+              Voreinstellunnen                                         \n\
+              11    Turnier mit neuer Db-Tabelle starten                \n\
+              12    Turnier mit bestehender Db-Tabelle starten           \n\
+              13    Anzahl der Bahnen erfassen                            \n\
                                                                           \n\
               Teilnehmer                                                   \n\
-              21    Teilnehmer eingeben                                    \n\
-              22    Teilnehmer inaktiv                                     \n\
+              21    Teilnehmer erfassen                                    \n\
+              22    Teilnehmer inaktiv setze                                \n\
               23    Teilnehmer aktiv setzen                                 \n\
               24    Teilnehmerliste anzeigen                                \n\
                                                                             \n\
               Spielrunden + Ergebnisse                                      \n\
               31    Neue Runde                                              \n\
               32    Ergebnisse eintragen                                    \n\
+              33    Ergebnisse korrigieren                                  \n\
+              34    Aktueller Tabellenstand anzeigen                         \n\
               Quit  Beenden  ")
-    eingabe = input("Deine Eingabe: ")
+    eingabe = input("\nDeine Eingabe: ")
     eingabe01 = eingabe.lower()
     if eingabe01 == "quit":
         sys.exit()
@@ -233,6 +282,9 @@ while eingabe1 != "quit":
         db_nummer= input("Deine Eingabe: ")
         db_name= file_db[int(db_nummer)-1]
         print(db_name)
+    if eingabe == "13":
+        print("Es wird noch daran gearbeitet")
+        anz_bahnen()
     if eingabe == "21":
         tn_erfassen()
     if eingabe == "22":
@@ -247,3 +299,9 @@ while eingabe1 != "quit":
         neue_runde()
     if eingabe == "32":
         ergebnisse()
+    if eingabe == "33":
+        print("Es wird noch daran gearbeitet")
+        ergebnisse_korr()
+    if eingabe == "34":
+        print("Es wird noch daran gearbeitet")
+        tn_tabelle()
