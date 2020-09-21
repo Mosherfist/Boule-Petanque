@@ -1,5 +1,5 @@
 import os, sys, sqlite3,glob, random
-
+#Kommentar
 
 def datenbank_erstellen(db_name):
     if os.path.exists(db_name + ".db"):
