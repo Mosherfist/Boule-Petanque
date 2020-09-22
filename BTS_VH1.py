@@ -8,7 +8,30 @@ def datenbank_erstellen(db_name):
         print("Erstelle neue Turnierdatenbank und die zugehörigen Tabellen...")
         conn = sqlite3.connect(db_name + ".db")
         c = conn.cursor()
-        c.execute("CREATE TABLE Teilnehmer (Team_ID INTEGER Primary Key, Teamname TEXT, Aktiv TEXT, Freilos TEXT, gew_Spiele INTEGER, Diff_Punkte INTEGER)")
+        #c.execute("CREATE TABLE Teilnehmer (Team_ID INTEGER Primary Key, Teamname TEXT, Aktiv TEXT, Freilos TEXT, gew_Spiele INTEGER, Diff_Punkte INTEGER)")
+        sql_anweisung = """
+        CREATE TABLE Teilnehmer (
+        Team_ID INTEGER Primary Key, 
+        Teamname TEXT, 
+        Aktiv TEXT, 
+        Freilos TEXT, 
+        gew_Spiele INTEGER, 
+        G_Diff_Punkte INTEGER,
+        H1_Pu_Diff INTEGER,
+        H2_Pu_Diff INTEGER,
+        H3_Pu_Diff INTEGER,
+        Runde1 INTEGER,
+        Runde2 INTEGER,
+        Runde3 INTEGER,
+        Runde4 INTEGER,
+        Runde5 INTEGER,
+        Ru1_Ge INTEGER,
+        Ru2_Ge INTEGER,
+        Ru3_Ge INTEGER,
+        Ru4_Ge INTEGER,
+        Ru5_Ge INTEGER
+        );"""
+        c.execute(sql_anweisung)
         c.execute(" CREATE TABLE Spielablauf (Spiel_ID INTEGER PRIMARY KEY, Runde INTEGER, Gegner_1 INTEGER, Gegner_2 INTEGER, Gewinner INTEGER, Punkte_G1 INTEGER, Punkte_G2 INTEGER, Status Text)")
         conn.commit()
         conn.close()
@@ -53,8 +76,9 @@ def tn_erfassen():
         eingabe_tn = input("Deine Eingabe: ")
         eingabe1_tn = eingabe_tn.lower()
         if eingabe1_tn != "quit":
-            c.execute("INSERT INTO Teilnehmer(Teamname,Aktiv, Freilos,gew_Spiele, Diff_Punkte) VALUES (?,?,?,?,?)",
-                      (eingabe_tn[:20], 'A','N',0,0))
+            #c.execute("INSERT INTO Teilnehmer(Teamname,Aktiv, Freilos,gew_Spiele, Diff_Punkte) VALUES (?,?,?,?,?)",
+             #         (eingabe_tn[:20], 'A','N',0,0))
+            c.execute("INSERT INTO Teilnehmer(Teamname, Aktiv, Freilos, gew_Spiele, G_Diff_Punkte, H1_Pu_Diff, H2_Pu_Diff, H3_Pu_Diff,Runde1, Runde2, Runde3, Runde4, Runde5, Ru1_Ge, Ru2_Ge, Ru3_Ge, Ru4_Ge, Ru5_Ge) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(eingabe_tn[:20], 'A', 'N', 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0))
             #c.execute("INSERT INTO Teilnehmer VALUES (Teamname, Aktiv, Freilos)", (eingabe_tn[:20], 'A', 'N'))
             conn.commit()
             c.execute("SELECT * FROM Teilnehmer ORDER BY team_ID DESC LIMIT 1")
