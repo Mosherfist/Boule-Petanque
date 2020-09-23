@@ -7,7 +7,7 @@ def datenbank_erstellen(db_name):
     else:
         print("Erstelle neue Turnierdatenbank und die zugehörigen Tabellen...")
         conn = sqlite3.connect(db_name + ".db")
-        c = conn.cursor()
+
         #c.execute("CREATE TABLE Teilnehmer (Team_ID INTEGER Primary Key, Teamname TEXT, Aktiv TEXT, Freilos TEXT, gew_Spiele INTEGER, Diff_Punkte INTEGER)")
         sql_anweisung = """
         CREATE TABLE Teilnehmer (
@@ -211,9 +211,9 @@ def ergebnisse():
             eingabe01 = eingabe.lower()
             if eingabe01 != "quit":
                 try:
-                    ruNu = int(eingabe[0:3])
-                    et01 = int(eingabe[4:6])
-                    et02 = int(eingabe[7:9])
+                    ruNu = int(eingabe[0:3])                        # Spiel_ID
+                    et01 = int(eingabe[4:6])                        # 1. Spielergebnis
+                    et02 = int(eingabe[7:9])                        # 2. Spielergebnis
                 except:
                     FeEinGabe(eingabe01)
                     ergebnisse()
@@ -222,6 +222,11 @@ def ergebnisse():
                     ergebnisse()
                     #except ValueError:
                     #FeEinGabe()
+
+                c.execute("SELECT * FROM Spielablauf WHERE Spiel_ID=?", (ruNu,))
+                rows = c.fetchall()
+                team1 = rows[0][2]
+                team2 = rows[0][3]
                 if et01 > et02:
                     gSpiele1 = 1
                     gSpiele2 = 0
@@ -234,10 +239,12 @@ def ergebnisse():
                     et022 = et01 - et02
 
                 c.execute("UPDATE Spielablauf SET  Punkte_G1=?, Punkte_G2=? WHERE Spiel_ID=?", (et01, et02, ruNu))
-                c.execute("SELECT * FROM Spielablauf WHERE Spiel_ID=?", (ruNu,))
+
+# Tabelle Teilnehmer abfragen und aktualisieren
+                c.execute("SELECT * FROM Teilnehmer WHERE Team_ID=?", (team1,))
                 rows = c.fetchall()
-                team1 = rows[0][2]
-                team2 = rows[0][3]
+
+
                 c.execute("UPDATE Teilnehmer SET Diff_Punkte= Diff_Punkte + ?, gew_Spiele= gew_Spiele + ? WHERE Team_ID=?", (et011, gSpiele1, team1))
                 c.execute("UPDATE Teilnehmer SET Diff_Punkte= Diff_Punkte + ?, gew_Spiele= gew_Spiele + ? WHERE Team_ID=?", (et022, gSpiele2, team2))
                 conn.commit()
