@@ -1,0 +1,50 @@
+body {
+    background-color: black;
+    color: #ffd700;
+}
+
+.ueberschrift {
+    padding: 0px;
+    align-items: center;
+    text-align: center;
+    width: 300px;
+    height: 50px;
+    color: #ff8010;
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: white;
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: white;
+    border-left-width: 2px;
+    border-left-style: solid;
+    border-left-color: white;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: white;
+    align-content: center;
+}
+
+
+
+.button {
+  background-color: #44ff1c;
+    border-top-width: 10px;
+    border-top-color: white;
+    border-right-width: 10px;
+    border-right-color: white;
+    border-left-width: 10px;
+    border-left-color: white;
+    border-bottom-width: 10px;
+    border-bottom-color: white;
+    color: #000000;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.button {
+    width: 300px;
+}
