@@ -25,6 +25,9 @@ body {
     align-content: center;
 }
 
+.ueberschrift h1 {
+    margin: 6px 0;
+}
 
 
 .button {
