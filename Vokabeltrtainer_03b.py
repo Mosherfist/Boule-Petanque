@@ -116,7 +116,6 @@ for i in gr_begriffe:
     elif ii > ges_bit:
         de_bit = 0
         en_bit = 0
-
     print("update: ", de_bit, en_bit, ges_bit, num)
     aufruf = ("UPDATE Deutsch_Englisch SET DE_bit=?, EN_bit=?, Ges_bit=? WHERE Num=? ", (de_bit, en_bit, ges_bit, num))
     db_update(aufruf)
