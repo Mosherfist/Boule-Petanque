@@ -28,30 +28,32 @@ class Tabelle:
         global ru01, ru02, ru03, ru04, ru05, ru01_ge, ru02_ge, ru03_ge, ru04_ge, ru05_ge
         Tabelle.teilnehmer_sel(team)
         print(team, " ", rows)
-        (ho1_Pu_Diff, ho2_Pu_Diff, ho3_Pu_Diff, ru01, ru02, ru03, ru04, ru05, ru01_ge, ru02_ge, ru03_ge, ru04_ge, ru05_ge) = rows[0][-13:]
         if et >= rows[0][6]:
+            ho3_Pu_Diff = rows[0][7]
+            ho2_Pu_Diff = rows[0][6]
             ho1_Pu_Diff = et
         elif et >= rows[0][7]:
+            ho3_Pu_Diff = rows[0][7]
             ho2_Pu_Diff = et
+            ho1_Pu_Diff = rows[0][6]
         elif et >= rows[0][8]:
             ho3_Pu_Diff = et
+            ho2_Pu_Diff = rows[0][7]
+            ho1_Pu_Diff = rows[0][6]
+        else:
+            ho3_Pu_Diff = rows[0][8]
+            ho2_Pu_Diff = rows[0][7]
+            ho1_Pu_Diff = rows[0][6]
 
         if ruNu1 == 1:
             ru01 = et
             ru01_ge = team_ge
             print(ru01_ge)
         if ruNu1 == 2:
+            ru01 = rows[0][9]
             ru02 = et
+            ru01_ge = rows[0][14]
             ru02_ge = team_ge
-        if ruNu1 == 3:
-            ru03 = et
-            ru03_ge = team_ge
-        if ruNu1 == 4:
-            ru04 = et
-            ru04_ge = team_ge
-        if ruNu1 == 5:
-            ru05 = et
-            ru05_ge = team_ge
         print(ho1_Pu_Diff)
         Tabelle.teilnehmer_up(gSpiele, et, ho1_Pu_Diff, ho2_Pu_Diff, ho3_Pu_Diff, ru01, ru02, ru03, ru04, ru05, ru01_ge,
                               ru02_ge, ru03_ge, ru04_ge, ru05_ge, team)
@@ -110,8 +112,5 @@ while (eingabe != "quit"):
                 gSpiele2 = 1
                 et022 = et02 - et01
                 et011 = et01 - et02
-            Tabelle.ergebnis(team1, gSpiele1, et011, team2)
-            Tabelle.ergebnis(team2, gSpiele2, et022, team1)
-        else:
-            pass
-##TODO: Zum AuswahlMenue
+        Tabelle.ergebnis(team1, gSpiele1, et011, team2)
+        Tabelle.ergebnis(team2, gSpiele2, et022, team1)

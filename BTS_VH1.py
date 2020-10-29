@@ -1,5 +1,4 @@
 import os, sys, sqlite3,glob, random
-#Kommentar
 
 def datenbank_erstellen(db_name):
     if os.path.exists(db_name + ".db"):
@@ -165,7 +164,7 @@ def turnier_auslosung():
     c = conn.cursor()
     c.execute("SELECT Team_ID FROM Teilnehmer WHERE Aktiv = 'A' ")
     inhalt = c.fetchall()
-    #print(inhalt[1])
+    print(inhalt)
     for db_satz in inhalt:
         #if db_satz[2) == "A":               ## Aktiv = Aktiv
         los_trommel.append(db_satz[(0)])
@@ -274,21 +273,21 @@ while eingabe1 != "quit":
     print("\n\
               Eine Auswahl treffen:                                    \n\
               Voreinstellunnen                                         \n\
-              11    Turnier mit neuer Db-Tabelle starten                \n\
-              12    Turnier mit bestehender Db-Tabelle starten           \n\
-              13    Anzahl der Bahnen erfassen                            \n\
+              11    Turnier mit neuer Db-Tabelle starten        ** in Arbeit **          \n\
+              12    Turnier mit bestehender Db-Tabelle starten  ** in Arbeit **         \n\
+              13    Anzahl der Bahnen erfassen                  ** in Arbeit **          \n\
                                                                           \n\
               Teilnehmer                                                   \n\
               21    Teilnehmer erfassen                                    \n\
               22    Teilnehmer inaktiv setze                                \n\
               23    Teilnehmer aktiv setzen                                 \n\
-              24    Teilnehmerliste anzeigen                                \n\
+              24    Teilnehmerliste anzeigen                    ** in Arbeit **            \n\
                                                                             \n\
               Spielrunden + Ergebnisse                                      \n\
               31    Neue Runde                                              \n\
               32    Ergebnisse eintragen                                    \n\
-              33    Ergebnisse korrigieren                                  \n\
-              34    Aktueller Tabellenstand anzeigen                         \n\
+              33    Ergebnisse korrigieren                      ** in Arbeit **            \n\
+              34    Aktueller Tabellenstand anzeigen            ** in Arbeit **             \n\
               Quit  Beenden  ")
     eingabe = input("\nDeine Eingabe: ")
     eingabe01 = eingabe.lower()
@@ -308,6 +307,7 @@ while eingabe1 != "quit":
         db_name= db_name + ".db"
         print(db_name)
     if eingabe == "12":
+        #TODO: Quit-Eingabe abfangen
         datenbanken_auflisten()
         print("Tabellennummer eingeben: ")
         db_nummer= input("Deine Eingabe: ")
@@ -329,7 +329,8 @@ while eingabe1 != "quit":
     if eingabe == "31":
         neue_runde()
     if eingabe == "32":
-        ergebnisse()
+        import tab_teil_test_2
+        #ergebnisse()
     if eingabe == "33":
         print("Es wird noch daran gearbeitet")
         ergebnisse_korr()
